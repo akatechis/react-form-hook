@@ -1,11 +1,13 @@
 import React from 'react'
 
-const inputStyles = valid => {
+const inputStyles = error => {
   return {
     display: 'block',
     padding: '10px',
     fontSize: '2em',
-    borderColor: valid ? 'inherit' : 'red'
+    borderColor: error
+      ? 'red'
+      : 'inherit'
   }
 }
 
@@ -18,9 +20,9 @@ const Field = props => {
         onChange={props.onChange}
         onBlur={props.onBlur}
         placeholder={props.placeholder}
-        style={inputStyles(props.valid)} />
-      { !props.valid &&
-        <div style={{ color: 'red' }}>{ props.message }</div>
+        style={inputStyles(props.error)} />
+      { props.error !== '' &&
+        <div style={{ color: 'red' }}>{ props.error }</div>
       }
     </label>
   )
