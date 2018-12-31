@@ -1,28 +1,22 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import Form from './Form'
 
 class App extends Component {
+  submitForm = form => {
+    console.log('Form submitted')
+    console.log(form)
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+      <div style={{ margin: '2em' }}>
+        <header>
+          <h1>Please fill out the form below</h1>
         </header>
+        <Form onSubmit={this.submitForm} />
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
