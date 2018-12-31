@@ -3,6 +3,7 @@ import Field from './Field'
 import useField from './hooks/useField'
 
 const dateRegex = /([0-9]{4})-([0-9]{2})-([0-9]{2})/
+const incomeRegex = /^[0-9]+(\.[0-9]{2})?$/
 
 // a date of birth is valid if it's YYYY-MM-DD and in the past
 const isDateOfBirthValid = dateOfBirth => {
@@ -33,22 +34,38 @@ const isNameValid = name => {
   return ''
 }
 
+const isIncomeValid = income => {
+  if (typeof income !== 'string') {
+    return 'Please enter your yearly income'
+  }
+  if (!incomeRegex.test(income)) {
+    return 'Please enter only the amount'
+  }
+  return ''
+}
+
 const Form = props => {
   const dobField = useField(props.dateOfBirth || '', isDateOfBirthValid)
   const nameField = useField(props.name || '', isNameValid)
+  const incomeField = useField(props.income || '', isIncomeValid)
 
   const submitForm = e => {
     e.preventDefault()
-    Promise.all([nameField.validate(), dobField.validate()])
-      .then(([nameValid, dobValid]) => {
-        if (nameValid && dobValid) {
-          const form = {
-            name: nameField.value,
-            dateOfBirth: dobField.value
-          }
-          props.onSubmit(form)
+    return Promise.all([
+      nameField.validate(),
+      dobField.validate(),
+      incomeField.validate(),
+    ])
+    .then(([nameValid, dobValid]) => {
+      if (nameValid && dobValid) {
+        const form = {
+          name: nameField.value,
+          dateOfBirth: dobField.value,
+          income: incomeField.value,
         }
-      })
+        props.onSubmit(form)
+      }
+    })
   }
 
   return (
@@ -58,6 +75,11 @@ const Form = props => {
         onChange={nameField.onChange}
         onBlur={nameField.onBlur}
         error={nameField.error} />
+      <Field label='Income'
+        value={incomeField.value}
+        onChange={incomeField.onChange}
+        onBlur={incomeField.onBlur}
+        error={incomeField.error} />
       <Field label='Date of Birth'
         placeholder='YYYY-MM-DD'
         value={dobField.value}
