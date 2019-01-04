@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 const useField = (
   initialValue,
@@ -8,18 +8,18 @@ const useField = (
   const [error, dispatchError] = useState('')
   const [dirty, dispatchDirty] = useState(false)
 
-  const onBlur = e => {
+  const onBlur = useCallback(e => {
     dispatchDirty(true)
     dispatchError(validation(value))
-  }
+  })
 
-  const onChange = e => {
+  const onChange = useCallback(e => {
     const newVal = e.target.value
     dispatchValue(newVal)
     if (dirty) {
       dispatchError(validation(newVal))
     }
-  }
+  })
 
   const validate = () => {
     return Promise.resolve(validation(value))
