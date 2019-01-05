@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Field from './Field'
 import useField from './hooks/useField'
 
@@ -49,7 +49,7 @@ const Form = props => {
   const nameField = useField(props.name || '', isNameValid)
   const incomeField = useField(props.income || '', isIncomeValid)
 
-  const submitForm = e => {
+  const submitForm = useCallback(e => {
     e.preventDefault()
     return Promise.all([
       nameField.validate(),
@@ -66,30 +66,16 @@ const Form = props => {
         props.onSubmit(form)
       }
     })
-  }
+  })
 
   return (
     <form method='post' onSubmit={submitForm}>
-      <Field label='Name'
-        value={nameField.value}
-        onChange={nameField.onChange}
-        onBlur={nameField.onBlur}
-        error={nameField.error} />
-      <Field label='Income'
-        value={incomeField.value}
-        onChange={incomeField.onChange}
-        onBlur={incomeField.onBlur}
-        error={incomeField.error} />
-      <Field label='Date of Birth'
-        placeholder='YYYY-MM-DD'
-        value={dobField.value}
-        onChange={dobField.onChange}
-        onBlur={dobField.onBlur}
-        error={dobField.error} />
+      <Field label='Name' scope={nameField} />
+      <Field label='Income' scope={incomeField} />
+      <Field label='Date of Birth' scope={dobField} placeholder='YYYY-MM-DD' />
       <input type='submit' value='Submit' style={{ fontSize: '1.5em' }} />
     </form>
   )
 }
-
 
 export default Form

@@ -15,14 +15,14 @@ const Field = props => {
   return (
     <label style={{ display: 'block' }}>
       <span style={{ fontSize: '1.5em' }}>{ props.label }:</span>
-      <input type='text' name={props.fieldName}
-        value={props.value}
-        onChange={props.onChange}
-        onBlur={props.onBlur}
+      <input type='text'
+        value={props.scope.value}
+        onChange={props.scope.onChange}
+        onBlur={props.scope.onBlur}
         placeholder={props.placeholder}
-        style={inputStyles(props.error)} />
+        style={inputStyles(props.scope.error)} />
       { props.error !== '' &&
-        <div style={{ color: 'red' }}>{ props.error }</div>
+        <div style={{ color: 'red' }}>{ props.scope.error }</div>
       }
     </label>
   )
